@@ -23,27 +23,27 @@ def comp_posterior(max_files = 10,data_dir = "./VOCdevkit/VOC2012/JPEGImages/"):
     #.close()
     
     #for i in fdata:
-	#cat_file_path = data_dir + i[:11] + '.jpg'
-	#print(cat_file_path)
+        #cat_file_path = data_dir + i[:11] + '.jpg'
+        #print(cat_file_path)
     for file_ in os.listdir(data_dir):
 
         image = Image.open(data_dir + file_)
-	#image = Image.open(cat_file_path)
+        #image = Image.open(cat_file_path)
         image = img_to_array(image)
         image = image.astype("uint8")
-	print(np.min(image), np.max(image))
-	ab_img = rgb2lab(image)[:,:,1:]
-	ab_img = ab_img + 5.0*np.ones(ab_img.shape)
+        print(np.min(image), np.max(image))
+        ab_img = rgb2lab(image)[:,:,1:]
+        ab_img = ab_img + 5.0*np.ones(ab_img.shape)
         image = (ab_img/10).astype(int) #maybe tune this?
         for i in range(image.shape[0]):
             for j in range(image.shape[1]):
-		if not (image[i,j,0],image[i,j,1]) in cnt:
-			cnt[(image[i,j,0],image[i,j,1])] =0
+                if not (image[i,j,0],image[i,j,1]) in cnt:
+                    cnt[(image[i,j,0],image[i,j,1])] =0
                 cnt[(image[i,j,0],image[i,j,1])] += 1
         if iter==max_files:
             break
         iter += 1
-	if iter%1000 ==0:
+        if iter%1000 ==0:
             print(iter)
     print(cnt)
     total = float(sum(cnt.values()))

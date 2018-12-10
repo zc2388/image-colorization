@@ -99,14 +99,7 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
                   metrics=metrics)
     if resume_training:
         model.load_weights(checkpoint_path, by_name=True)
-    model_path = os.path.join(save_path, "model.json")
-    # save model structure
-    f = open(model_path, 'w')
-    model_json = model.to_json()
-    f.write(model_json)
-    f.close
-    img_path = os.path.join(save_path, "model.png")
-    # #vis_util.plot(model, to_file=img_path, show_shapes=True)
+
     model.summary()
 
     # lr_reducer      = ReduceLROnPlateau(monitor=softmax_sparse_crossentropy_ignoring_last_label, factor=np.sqrt(0.1),
@@ -134,7 +127,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
                                      channel_shift_range=0.,
                                      fill_mode='constant',
                                      label_cval=label_cval)
-    val_datagen = ColorizationDataGenerator()
 
     def get_file_len(file_path):
         fp = open(file_path)
@@ -162,13 +154,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
         epochs=epochs,
         callbacks=callbacks,
         workers=4,
-        # validation_data=val_datagen.flow_from_directory(
-        #     file_path=val_file_path, data_dir=data_dir, data_suffix='.jpg',
-        #     label_dir=label_dir, label_suffix='.png',classes=classes,
-        #     target_size=target_size, color_mode='rgb',
-        #     batch_size=batch_size, shuffle=False
-        # ),
-        # nb_val_samples = 64
         class_weight=class_weight
        )
 
@@ -189,9 +174,8 @@ if __name__ == '__main__':
     else:
         weight_decay = 1e-4
     target_size = (320, 320)
-    dataset = 'flower'
+    dataset = 'cat'
     if dataset == 'flower':
-        # pascal voc + berkeley semantic contours annotations
         train_file_path = os.path.expanduser('~/dataset/flowers/files.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
         # train_file_path = os.path.expanduser('~/.keras/datasets/oneimage/train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
         val_file_path   = os.path.expanduser('~/dataset/flowers/files.txt')
@@ -201,24 +185,18 @@ if __name__ == '__main__':
         label_suffix='.npy'
         classes = 314
 
-    if dataset == 'COCO':
-        # ###################### loss function & metric ########################
+    if dataset == 'cat':
         train_file_path = os.path.expanduser('~/class_wise_label/cat_train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
         # train_file_path = os.path.expanduser('~/.keras/datasets/oneimage/train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
-        val_file_path   = os.path.expanduser('~/class_wise_label/cat_train.txt')
+        val_file_path   = os.path.expanduser('~/class_wise_label/cat_val.txt')
         data_dir        = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/JPEGImages')
-        label_dir       = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/SegmentationClass')
-        loss_fn = binary_crossentropy_with_logits
-        metrics = [binary_accuracy]
-        loss_shape = (target_size[0] * target_size[1] * classes,)
-        label_suffix = '.npy'
+        label_dir       = os.path.expanduser('~/.keras/datasets/VOC2012/color_segmentation_classes')
         data_suffix='.jpg'
-        ignore_label = None
-        label_cval = 0
-
+        label_suffix='.npy'
+        classes = 314
 
     # ###################### loss function & metric ########################
-    if dataset == 'VOC2012' or dataset == 'VOC2012_BERKELEY' or dataset == 'flower':
+    if dataset == 'VOC2012' or dataset == 'VOC2012_BERKELEY' or dataset == 'flower' or or dataset == 'cat':
         loss_fn = softmax_sparse_crossentropy_ignoring_last_label_weighted_tensor
         #softmax_sparse_crossentropy_ignoring_last_label
         metrics = [sparse_accuracy_ignoring_last_label]

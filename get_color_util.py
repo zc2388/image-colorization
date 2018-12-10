@@ -276,4 +276,4 @@ def pred_2_image_5nn(pred, intensity):#pred:W*H*314, intensity: the grayscale. R
 
 
 if __name__ == '__main__':
-	build_labels()
+    build_labels()

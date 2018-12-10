@@ -5,7 +5,9 @@ import tensorflow as tf
 import numpy as np
 
 #load in the color_vec_table
-COLOR_VEC_TABLE = np.load('/home/zc2388/segmentation/Keras-Colorization/models/color_vec_table_cat_0.2.npy') #("/home/zc2388/segmentation/Keras-FCN/models/color_vec_table_cat_0.2.npy")
+
+weight_path = "/home/zc2388/segmentation/Keras-Colorization/models/color_vec_table_cat_0.2.npy"
+COLOR_VEC_TABLE = np.load(weight_path) #("/home/zc2388/segmentation/Keras-FCN/models/color_vec_table_cat_0.2.npy")
 COLOR_VEC_TABLE = np.vstack((COLOR_VEC_TABLE,np.zeros((1,314))))
 COLOR_VEC_TABLE = np.vstack((COLOR_VEC_TABLE,np.zeros((1,314))))
 COLOR_VEC_TABLE = K.constant(COLOR_VEC_TABLE) # 314*314

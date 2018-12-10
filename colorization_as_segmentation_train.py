@@ -99,14 +99,7 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
                   metrics=metrics)
     if resume_training:
         model.load_weights(checkpoint_path, by_name=True)
-    model_path = os.path.join(save_path, "model.json")
-    # save model structure
-    f = open(model_path, 'w')
-    model_json = model.to_json()
-    f.write(model_json)
-    f.close
-    img_path = os.path.join(save_path, "model.png")
-    # #vis_util.plot(model, to_file=img_path, show_shapes=True)
+
     model.summary()
 
     # lr_reducer      = ReduceLROnPlateau(monitor=softmax_sparse_crossentropy_ignoring_last_label, factor=np.sqrt(0.1),
@@ -123,7 +116,7 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
     checkpoint = ModelCheckpoint(filepath=os.path.join(save_path, 'checkpoint_weights.hdf5'), save_weights_only=True)#.{epoch:d}
     callbacks.append(checkpoint)
     # set data generator and train
-    train_datagen = SegDataGenerator(zoom_range=[1.0, 1.0],
+    train_datagen = SegDataGenerator(zoom_range=[1.0, 1.5],
                                      zoom_maintain_shape=True,
                                      crop_mode='random',
                                      crop_size=target_size,
@@ -134,7 +127,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
                                      channel_shift_range=0.,
                                      fill_mode='constant',
                                      label_cval=label_cval)
-    val_datagen = ColorizationDataGenerator()
 
     def get_file_len(file_path):
         fp = open(file_path)
@@ -162,13 +154,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
         epochs=epochs,
         callbacks=callbacks,
         workers=4,
-        # validation_data=val_datagen.flow_from_directory(
-        #     file_path=val_file_path, data_dir=data_dir, data_suffix='.jpg',
-        #     label_dir=label_dir, label_suffix='.png',classes=classes,
-        #     target_size=target_size, color_mode='rgb',
-        #     batch_size=batch_size, shuffle=False
-        # ),
-        # nb_val_samples = 64
         class_weight=class_weight
        )
 
@@ -176,8 +161,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
 
 if __name__ == '__main__':
     model_name = 'Colorization_As_Segmentation_AtrousFCN_Resnet50_16s'
-    #model_name = 'Atrous_DenseNet'
-    #model_name = 'DenseNet_FCN'
     batch_size = 10
     batchnorm_momentum = 0.95
     epochs = 10
@@ -200,22 +183,6 @@ if __name__ == '__main__':
         data_suffix='.jpg'
         label_suffix='.npy'
         classes = 314
-
-    if dataset == 'COCO':
-        # ###################### loss function & metric ########################
-        train_file_path = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/ImageSets/Segmentation/train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
-        # train_file_path = os.path.expanduser('~/.keras/datasets/oneimage/train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
-        val_file_path   = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/ImageSets/Segmentation/val.txt')
-        data_dir        = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/JPEGImages')
-        label_dir       = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/SegmentationClass')
-        loss_fn = binary_crossentropy_with_logits
-        metrics = [binary_accuracy]
-        loss_shape = (target_size[0] * target_size[1] * classes,)
-        label_suffix = '.npy'
-        data_suffix='.jpg'
-        ignore_label = None
-        label_cval = 0
-
 
     # ###################### loss function & metric ########################
     if dataset == 'VOC2012' or dataset == 'VOC2012_BERKELEY':

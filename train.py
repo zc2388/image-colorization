@@ -47,7 +47,7 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
         '''if lr_dict.has_key(epoch):
             lr = lr_dict[epoch]
             print 'lr: %f' % lr'''
-	lr = lr_base
+        lr = lr_base
         if mode is 'power_decay':
             # original lr scheduler
             lr = lr_base * ((1 - float(epoch)/epochs) ** lr_power)
@@ -133,8 +133,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
         fp.close()
         return len(lines)
 
-    # from Keras documentation: Total number of steps (batches of samples) to yield from generator before declaring one epoch finished
-    # and starting the next epoch. It should typically be equal to the number of unique samples of your dataset divided by the batch size.
     steps_per_epoch = int(np.ceil(get_file_len(train_file_path) / float(batch_size)))
 
     history = model.fit_generator(
@@ -153,13 +151,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
         epochs=epochs,
         callbacks=callbacks,
         workers=1,
-        # validation_data=val_datagen.flow_from_directory(
-        #     file_path=val_file_path, data_dir=data_dir, data_suffix='.jpg',
-        #     label_dir=label_dir, label_suffix='.png',classes=classes,
-        #     target_size=target_size, color_mode='rgb',
-        #     batch_size=batch_size, shuffle=False
-        # ),
-        # nb_val_samples = 64
         class_weight=class_weight
        )
 
@@ -167,8 +158,6 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
 
 if __name__ == '__main__':
     model_name = 'AtrousFCN_Resnet50_16s_modify'
-    #model_name = 'Atrous_DenseNet'
-    #model_name = 'DenseNet_FCN'
     batch_size = 20
     batchnorm_momentum = 0.95
     epochs = 40
@@ -191,21 +180,6 @@ if __name__ == '__main__':
         data_suffix='.jpg'
         label_suffix='.png'
         classes = 21
-    if dataset == 'COCO':
-        # ###################### loss function & metric ########################
-        train_file_path = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/ImageSets/Segmentation/train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
-        # train_file_path = os.path.expanduser('~/.keras/datasets/oneimage/train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
-        val_file_path   = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/ImageSets/Segmentation/val.txt')
-        data_dir        = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/JPEGImages')
-        label_dir       = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/SegmentationClass')
-        loss_fn = binary_crossentropy_with_logits
-        metrics = [binary_accuracy]
-        loss_shape = (target_size[0] * target_size[1] * classes,)
-        label_suffix = '.npy'
-        data_suffix='.jpg'
-        ignore_label = None
-        label_cval = 0
-
 
     # ###################### loss function & metric ########################
     if dataset == 'VOC2012' or dataset == 'VOC2012_BERKELEY':
@@ -215,11 +189,6 @@ if __name__ == '__main__':
         ignore_label = 255
         label_cval = 255
 
-    # Class weight is not yet supported for 3+ dimensional targets
-    # class_weight = {i: 1 for i in range(classes)}
-    # # The background class is much more common than all
-    # # others, so give it less weight!
-    # class_weight[0] = 0.1
     class_weight = None
 
     config = tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True))

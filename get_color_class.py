@@ -85,7 +85,7 @@ for i in range(23):
 
 print(ab_label_hashmap)
 for i in range(23):
-	print(ab_label_hashmap[(i-11.0)*10.0/256.0])
+        print(ab_label_hashmap[(i-11.0)*10.0/256.0])
 
 
 def get_label_array(image_path, ab_label_hashmap):
@@ -107,11 +107,11 @@ def get_label_array(image_path, ab_label_hashmap):
 
     if np.min(label_map)==-1:
         print("Noob!")
-	print(np.max(label_map))
-	for i in range(x.shape[0]):
-	    for j in range(x.shape[1]):
-		if label_map[i,j] == -1:
-		    print(ab_image[i,j])
+        print(np.max(label_map))
+        for i in range(x.shape[0]):
+            for j in range(x.shape[1]):
+                if label_map[i,j] == -1:
+                    print(ab_image[i,j])
     return label_map
 
 def process_data(data_dir, output_folder, data_idx_file_path, data_suffix):
@@ -138,7 +138,7 @@ def process_data(data_dir, output_folder, data_idx_file_path, data_suffix):
 train_file_path = os.path.expanduser('~/dataset/flowers/jpg/files.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
 # train_file_path = os.path.expanduser('~/.keras/datasets/oneimage/train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
 val_file_path   = os.path.expanduser('~/.keras/datasets/VOC2012/combined_imageset_val.txt')
-data_dir        = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/JPEGImages')
+#data_dir        = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/JPEGImages')
 data_dir        = os.path.expanduser('~/dataset/flowers/jpg')
 output_folder = os.path.expanduser('~/dataset/flowers/color_label')
 data_suffix=''
