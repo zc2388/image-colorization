@@ -4,6 +4,8 @@ This repo is a modified version of Keras-FCN repo, which is a Keras tool for ima
 
 This reference github repo provide a Keras version of resnet, a Keras version bilinear upsample layer and a cross-entropy loss function for image segmentation. Since Keras does not have those layers for image segmentation, so we reused the well-designed tool to do image segmentation pretrain. Here instead of just doing image segmentation, several tools are designed to finish image colorization task.
 
+# util classes and functions:
+
 utils/Coloriazation_generator.py: This is a data generator for Keras training using regression loss. We read source RGB image from a given path, use skimage library to format it into Lab color space. Then we'll use only L channel to reconstruct grayscale image as input for our network. If we are using regression loss, then the desired output is just ab channel. For data augmentation part we followed what Keras-FCN did. The fill value is fixed to be zero for both input image and label.
 
 utils/loss.py: Several loss layers are added here to do label rebalance. Regression losses are also defined here.
@@ -16,6 +18,8 @@ get_color_util.py: This util function helps us get the color distribution. We'll
 
 LR_SGD.py: this is a modified version of SGD optimizer. Since the first half part of our model is already well trained on ImageNet dataset, we'll make the learning rate to be smaller than randomly init params.
 reference: https://ksaluja15.github.io/Learning-Rate-Multipliers-in-Keras/
+
+# Training scripts:
 
 train.py: This is the original training script for image segmentation task from https://github.com/aurora95/Keras-FCN . Given training dataset, we get a image segmentation model.
 
