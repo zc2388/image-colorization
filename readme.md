@@ -13,6 +13,7 @@ get_color_class.py: This tool takes our dataset and color map, then produce labe
 get_color_util.py: This util function helps us get the color distribution. We'll go through training dataset and collect color distribution. Using this matrix, we are able to calculate weight for each label. The parameter is then saved to a matrix of shape 314 by 314. The weight matrix will later be used in our weighted cross-entropy loss function
 
 LR_SGD.py: this is a modified version of SGD optimizer. Since the first half part of our model is already well trained on ImageNet dataset, we'll make the learning rate to be smaller than randomly init params.
+reference: https://ksaluja15.github.io/Learning-Rate-Multipliers-in-Keras/
 
 train.py: Use Regression loss to train image colorization task. Just adjust param in this script and run python train.py
 
