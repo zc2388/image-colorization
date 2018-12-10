@@ -99,7 +99,7 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
                   metrics=[L2_ab_regression_loss])
     if resume_training:
         model.load_weights(checkpoint_path, by_name=True)
-    model.load_weights("/home/zc2388/segmentation/image-colorization/Models/AtrousFCN_Resnet50_16s_modify/model.hdf5", by_name=True)
+    model.load_weights("/home/zc2388/segmentation/Keras-Colorization/Models/AtrousFCN_Resnet50_16s_modify/model.hdf5", by_name=True)
     model_path = os.path.join(save_path, "model.json")
     # save model structure
     f = open(model_path, 'w')

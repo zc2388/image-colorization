@@ -163,7 +163,7 @@ if __name__ == '__main__':
     model_name = 'Colorization_As_Segmentation_AtrousFCN_Resnet50_16s'
     #model_name = 'Atrous_DenseNet'
     #model_name = 'DenseNet_FCN'
-    batch_size = 10
+    batch_size = 6
     batchnorm_momentum = 0.95
     epochs = 80
     lr_base = 0.001 * (float(batch_size) / 16)
@@ -196,7 +196,7 @@ if __name__ == '__main__':
         classes = 314
 
     # ###################### loss function & metric ########################
-    if dataset == 'VOC2012' or dataset == 'VOC2012_BERKELEY' or dataset == 'flower' or or dataset == 'cat':
+    if dataset == 'VOC2012' or dataset == 'VOC2012_BERKELEY' or dataset == 'flower' or dataset == 'cat':
         loss_fn = softmax_sparse_crossentropy_ignoring_last_label_weighted_tensor
         #softmax_sparse_crossentropy_ignoring_last_label
         metrics = [sparse_accuracy_ignoring_last_label]

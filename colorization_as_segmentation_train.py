@@ -161,10 +161,10 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
 
 if __name__ == '__main__':
     model_name = 'Colorization_As_Segmentation_AtrousFCN_Resnet50_16s'
-    batch_size = 10
+    batch_size = 4
     batchnorm_momentum = 0.95
-    epochs = 10
-    lr_base = 0.0001 * (float(batch_size) / 16)
+    epochs = 30
+    lr_base = 0.001 * (float(batch_size) / 16)
     lr_power = 0.9
     resume_training = True
     if model_name is 'AtrousFCN_Resnet50_16s':
