@@ -8,6 +8,8 @@ utils/Coloriazation_generator.py: This is a data generator for Keras training us
 
 utils/loss.py: Several loss layers are added here to do label rebalance. Regression losses are also defined here.
 
+get_color_class.py: This tool takes our dataset and color map, then produce label file (.npy format) for each image. The label map will later be used in Colorization as Segmentation task. Just run 'python get_color_class.py'. data dir and train file path can be edited inside this file.
+
 get_color_util.py: This util function helps us get the color distribution. We'll go through training dataset and collect color distribution. Using this matrix, we are able to calculate weight for each label. The parameter is then saved to a matrix of shape 314 by 314. The weight matrix will later be used in our weighted cross-entropy loss function
 
 LR_SGD.py: this is a modified version of SGD optimizer. Since the first half part of our model is already well trained on ImageNet dataset, we'll make the learning rate to be smaller than randomly init params.
