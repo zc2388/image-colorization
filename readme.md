@@ -8,7 +8,7 @@ This reference github repo provide a Keras version of resnet, a Keras version bi
 
 utils/Coloriazation_generator.py: This is a data generator for Keras training using regression loss. We read source RGB image from a given path, use skimage library to format it into Lab color space. Then we'll use only L channel to reconstruct grayscale image as input for our network. If we are using regression loss, then the desired output is just ab channel. For data augmentation part we followed what Keras-FCN did. The fill value is fixed to be zero for both input image and label.
 
-utils/loss.py: Several loss layers are added here to do label rebalance. Regression losses are also defined here.
+utils/loss_function.py: Several loss layers are added here to do label rebalance. Regression losses are also defined here. softmax_sparse_crossentropy_ignoring_last_label_weighted_tensor(y_true, y_pred) is the loss with best performance.
 
 compute_color_posterior.py: Running this script is the first step needed to be done for Colorization as Segmentation. This script will scan the whole training dataset and get a prior prob-distribution (not posterior!). This matrix will later be used in computing weight for each class. To run this script, training dir should be given in this script, and then run 'python compute_color_posterior.py'. Since we tried different classes, we specify the name of output file. Output will be saved in 'models' directory.
 
